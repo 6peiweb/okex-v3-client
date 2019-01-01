@@ -1,0 +1,107 @@
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<style>
+  body {
+    /* background: rgba(0,0,0,0.5) */
+  }
+  .redfont {
+    color: red;
+  }
+  .darkbluefont {
+    color: darkblue;
+  }
+</style>
+<div id="app">
+  <div>
+    <p :class="fontSize" style="font-size: 150px;">价格：{{price}}</p>
+    <div>
+      <label for="maxPrice">
+        最大价格：
+        <input id="maxPrice" v-model="maxPrice">
+      </label>
+      <label for="minPrice">
+        最小价格：
+        <input id="minPrice" v-model="minPrice">
+      </label>
+      <button @click="changePrompt(true)">确认</button>
+      <button @click="changePrompt(false)">取消</button>
+    </div>
+  </div>
+  <div v-for="item in list">
+    <p style="font-size: 40px;">{{item}}</p>
+  </div>
+  <audio id="prompt" src="./asserts/prompt.mp3"></audio>
+</div>
+<script>
+  const audio = document.getElementById('prompt')
+
+  const app = new Vue({
+    el: '#app',
+    data: {
+      list: [],
+      price: '',
+      maxPrice: '',
+      minPrice: '',
+      canPrompt: false,
+      fontSize: 'darkbluefont'
+    },
+    created() {
+      // socket = new WebSocket("ws://3s.dkys.org:13098/")
+      socket = new WebSocket("ws://127.0.0.1/")
+      socket.onopen = () => {
+        console.log("Socket opened.")
+        socket.send("Hi, Server!")
+      }
+      socket.onclose = () => {
+        console.log("Socket closed.")
+      }
+      socket.onerror = () => {
+        console.log("We got an error.")
+      }
+      socket.onmessage = (msg) => {
+        const data = JSON.parse(msg.data)
+        this.pushItem(data)
+        socket.send("Hi, Server!")
+      }
+    },
+    methods: {
+      pushItem(data){
+        let price = data.last
+        this.price = price
+        document.title = price
+        this.prompt(price)
+        this.list.unshift(data)
+        if(this.list.length > 10) {
+          this.list.pop()
+        }
+      },
+      prompt(price) {
+        if (audio.paused && this.canPrompt) {
+          if (this.price === 'timeout') {
+            this.fontSize = 'redfont'
+            console.log(`时间：${new Date().toLocaleTimeString()}，【超时请求】`)
+            return audio.pause()
+          }
+          if (this.maxPrice && this.price >= this.maxPrice) {
+            this.fontSize = 'redfont'
+            console.log(`时间：${new Date().toLocaleTimeString()}，价格：【${this.price}】高于设定最高价【${this.maxPrice}】`)
+            return audio.play()
+          }
+          if (this.minPrice && this.price <= this.minPrice) {
+            this.fontSize = 'redfont'
+            console.log(`时间：${new Date().toLocaleTimeString()}，价格：【${this.price}】低于设定最低价【${this.minPrice}】`)
+            return audio.play()
+          }
+          this.fontSize = 'darkbluefont'
+          return audio.pause()
+        }
+      },
+      changePrompt(flag) {
+        this.canPrompt = flag
+        flag ?
+          console.log(`时间：${new Date().toLocaleTimeString()}，已设定提醒，最大价格【${this.maxPrice}】，最小价格【${this.minPrice}】`) :
+          console.log(`时间：${new Date().toLocaleTimeString()}，已取消提醒`)
+        return audio.pause()
+      }
+    }
+  })
+</script>

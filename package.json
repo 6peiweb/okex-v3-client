@@ -1,0 +1,23 @@
+{
+  "name": "okex-v3-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app",
+    "dev": "node ./index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@okfe/okex-node": "^0.0.36",
+    "koa": "^2.6.2",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "nodemailer": "^5.0.0",
+    "nodemailer-smtp-transport": "^2.7.4",
+    "nodemon": "^1.18.9",
+    "request": "^2.88.0",
+    "ws": "^6.1.2"
+  }
+}

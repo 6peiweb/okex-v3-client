@@ -1,0 +1,14 @@
+{
+  "watch": [
+    "src",
+    "app.js",
+    "server.js",
+    "index.js"
+  ],
+  "ignore": [
+    ".git",
+    "node_modules"
+  ],
+  "exec": "node",
+  "ext": "js"
+}
