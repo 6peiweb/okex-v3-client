@@ -46,7 +46,8 @@
       maxPrice: '',
       minPrice: '',
       canPrompt: false,
-      fontSize: 'darkbluefont'
+      fontSize: 'darkbluefont',
+      notification: null
     },
     created() {
       socket = new WebSocket("wss://www.liupei.xyz/wss")
@@ -88,17 +89,20 @@
           if (this.maxPrice && this.price >= this.maxPrice) {
             this.fontSize = 'redfont'
             icon.href = './asserts/red.png'
+            this.notice(true)
             console.log(`时间：${new Date().toLocaleTimeString()}，风速：【${this.price}】高于设定最高价【${this.maxPrice}】`)
             return audio.play()
           }
           if (this.minPrice && this.price <= this.minPrice) {
             this.fontSize = 'redfont'
             icon.href = './asserts/red.png'
+            this.notice(false)
             console.log(`时间：${new Date().toLocaleTimeString()}，风速：【${this.price}】低于设定最低价【${this.minPrice}】`)
             return audio.play()
           }
           this.fontSize = 'darkbluefont'
           icon.href = './asserts/green.png'
+          this.notification && this.notification.close()
           return audio.pause()
         }
       },
@@ -108,6 +112,14 @@
           console.log(`时间：${new Date().toLocaleTimeString()}，已设定提醒，最大风速【${this.maxPrice}】，最小风速【${this.minPrice}】`) :
           console.log(`时间：${new Date().toLocaleTimeString()}，已取消提醒`)
         return audio.pause()
+      },
+      notice(key) {
+        if (Notification.permission == "granted") {
+          this.notification = new Notification(`${key ? '风速过快' : '风速过慢'}`, {
+            body: `风速已${key ? '向上' : '向下'}触发提醒风速：【${key ? this.maxPrice : this.minPrice}】`,
+            icon: 'https://developers.weixin.qq.com/miniprogram/dev/image/cat/3.png?t=18122815'
+          })
+        }
       }
     }
   })
