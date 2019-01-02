@@ -40,7 +40,7 @@ const static = require('koa-static')
 
 const app = new Koa()
 
-console.log(__dirname)
+console.log(path.resolve(__dirname, './ssl/www.liupei.xyz.key'))
 
 const httpsOption = { 
   key : fs.readFileSync('./ssl/www.liupei.xyz.key'), 
