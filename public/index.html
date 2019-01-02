@@ -12,23 +12,23 @@
 </style>
 <div id="app">
   <div>
-    <p :class="fontSize" style="font-size: 150px;">价格：{{price}}</p>
+    <p :class="fontSize" style="font-size: 100px;">风速：{{price}}</p>
     <div>
       <label for="maxPrice">
-        最大价格：
+        最大风速：
         <input id="maxPrice" v-model="maxPrice">
       </label>
       <label for="minPrice">
-        最小价格：
+        最小风速：
         <input id="minPrice" v-model="minPrice">
       </label>
       <button @click="changePrompt(true)">确认</button>
       <button @click="changePrompt(false)">取消</button>
     </div>
   </div>
-  <div v-for="item in list">
+  <!-- <div v-for="item in list">
     <p style="font-size: 40px;">{{item}}</p>
-  </div>
+  </div> -->
   <audio id="prompt" src="./asserts/prompt.mp3"></audio>
 </div>
 <script>
@@ -45,8 +45,8 @@
       fontSize: 'darkbluefont'
     },
     created() {
-      // socket = new WebSocket("ws://3s.dkys.org:13098/")
-      socket = new WebSocket("ws://127.0.0.1/")
+      socket = new WebSocket("ws://3s.dkys.org:13098/")
+      // socket = new WebSocket("ws://127.0.0.1/")
       socket.onopen = () => {
         console.log("Socket opened.")
         socket.send("Hi, Server!")
@@ -83,12 +83,12 @@
           }
           if (this.maxPrice && this.price >= this.maxPrice) {
             this.fontSize = 'redfont'
-            console.log(`时间：${new Date().toLocaleTimeString()}，价格：【${this.price}】高于设定最高价【${this.maxPrice}】`)
+            console.log(`时间：${new Date().toLocaleTimeString()}，风速：【${this.price}】高于设定最高价【${this.maxPrice}】`)
             return audio.play()
           }
           if (this.minPrice && this.price <= this.minPrice) {
             this.fontSize = 'redfont'
-            console.log(`时间：${new Date().toLocaleTimeString()}，价格：【${this.price}】低于设定最低价【${this.minPrice}】`)
+            console.log(`时间：${new Date().toLocaleTimeString()}，风速：【${this.price}】低于设定最低价【${this.minPrice}】`)
             return audio.play()
           }
           this.fontSize = 'darkbluefont'
@@ -98,7 +98,7 @@
       changePrompt(flag) {
         this.canPrompt = flag
         flag ?
-          console.log(`时间：${new Date().toLocaleTimeString()}，已设定提醒，最大价格【${this.maxPrice}】，最小价格【${this.minPrice}】`) :
+          console.log(`时间：${new Date().toLocaleTimeString()}，已设定提醒，最大风速【${this.maxPrice}】，最小风速【${this.minPrice}】`) :
           console.log(`时间：${new Date().toLocaleTimeString()}，已取消提醒`)
         return audio.pause()
       }
