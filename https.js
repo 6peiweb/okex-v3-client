@@ -6,7 +6,7 @@ const Koa    = require('koa')
 const static = require('koa-static')
 
 const app = new Koa()
-
+console.log(path)
 const httpsOption = { 
   key : fs.readFileSync('./ssl/www.liupei.xyz.key'), 
   cert: fs.readFileSync('./ssl/www.liupei.xyz.pem')
