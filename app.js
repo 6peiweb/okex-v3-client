@@ -2,6 +2,9 @@ const { PublicClient } = require('@okfe/okex-node')
 
 const { getInstrumentId } = require('./src/util')
 const { sendMail } = require('./src/email')
+const { app } = require('./server')
+
+const PORT = 1113
 
 const client = new PublicClient('https://www.okex.me')
 
@@ -28,5 +31,6 @@ ws.on('connection', (socket) => {
       socket.send('{"last": "timeout"}')
     }
   })
-  
 })
+
+app.listen(PORT, () => console.log(`HTTP Server is running on: http://127.0.0.1:${PORT}`))
