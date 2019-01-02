@@ -40,6 +40,8 @@ const static = require('koa-static')
 
 const app = new Koa()
 
+console.log(path)
+
 const resolve = (path) => {
   return path.resolve(__dirname, path)
 }
