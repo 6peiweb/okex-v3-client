@@ -98,8 +98,6 @@
             console.log(`时间：${new Date().toLocaleTimeString()}，风速：【${this.price}】低于设定最低价【${this.minPrice}】`)
             return audio.play()
           }
-          console.log(this.price)
-          console.log(this.minPrice)
           this.fontSize = 'darkbluefont'
           icon.href = './asserts/green.png'
           return audio.pause()
