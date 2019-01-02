@@ -49,7 +49,7 @@
       fontSize: 'darkbluefont'
     },
     created() {
-      socket = new WebSocket("wss://47.106.202.149/")
+      socket = new WebSocket("wss://www.liupei.xyz/")
       socket.onopen = () => {
         console.log("Socket opened.")
         socket.send("Hi, Server!")
