@@ -4,8 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app",
-    "dev": "nodemon index",
+    "start": "npm run socket && npm run https",
+    "socket": "nodemon socket",
+    "https": "nodemon https",
+    "print": "nodemon ./src/print",
     "publish": "git add . && git commit -m 'ok' && git push"
   },
   "author": "",

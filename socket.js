@@ -30,19 +30,3 @@ ws.on('connection', (socket) => {
   })
   
 })
-
-const Koa = require('koa')
-const path = require('path')
-const static = require('koa-static')
-
-const app = new Koa()
-
-app.use(static(
-  path.join( __dirname,  './public')
-))
-
-app.listen(443, () => {
-  console.log('server is starting at port 443')
-})
-
-
