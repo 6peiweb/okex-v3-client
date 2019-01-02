@@ -60,7 +60,7 @@
       socket.onmessage = (msg) => {
         const data = JSON.parse(msg.data)
         this.pushItem(data)
-        socket.send("Hi, Server!")
+        setTimeout(() => socket.send("Hi, Server!"), 300)
       }
     },
     methods: {
