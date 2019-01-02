@@ -15,7 +15,7 @@ const getTicker = async () => {
 
 const WebSocketServer = require('ws').Server
 
-const ws = new WebSocketServer({port: 10086})
+const ws = new WebSocketServer({port: 8080})
 
 ws.on('connection', (socket) => {
   console.log(`websocket 连接成功...`)
@@ -41,8 +41,8 @@ app.use(static(
   path.join( __dirname,  './public')
 ))
 
-app.listen(4399, () => {
-  console.log('server is starting at port 4399')
+app.listen(443, () => {
+  console.log('server is starting at port 443')
 })
 
 

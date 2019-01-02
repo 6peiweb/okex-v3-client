@@ -49,8 +49,7 @@
       fontSize: 'darkbluefont'
     },
     created() {
-      socket = new WebSocket("ws://47.106.202.149:10086/")
-      // socket = new WebSocket("ws://127.0.0.1/")
+      socket = new WebSocket("ws://47.106.202.149:8080/")
       socket.onopen = () => {
         console.log("Socket opened.")
         socket.send("Hi, Server!")
