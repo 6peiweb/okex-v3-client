@@ -7,4 +7,6 @@ const result = async () => {
   return data
 }
 
+console.log('*********************************')
 console.log(result())
+console.log('*********************************')
