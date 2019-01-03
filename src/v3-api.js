@@ -4,9 +4,8 @@ const auth = new AuthenticatedClient('f3a5860b-e5f6-4d6e-8477-78690024e47f', 'DE
 
 const result = async () => {
   const data = await auth.spot().getAccounts()
+  console.log(data)
   return data
 }
 
-console.log('*********************************')
-console.log(result())
-console.log('*********************************')
+result()
