@@ -6,7 +6,9 @@ const futures = client.futures()
 
 const getTicker = async (index, ticker) => {
   const instrumentKey = getInstrumentKey(ticker)[index]
+  console.log(instrumentKey)
   const response = await futures.getTicker(instrumentKey)
+  console.log(response)
   return response
 }
 
