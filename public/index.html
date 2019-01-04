@@ -45,15 +45,17 @@
       multiple: 10,
       canPrompt: false,
       fontSize: 'darkbluefont',
-      notification: null
+      notification: null,
+      ticker: ''
     },
     created() {
+      this.ticker = location.search.slice(1).split('&').map(s => s.split('='))[0][1]
       this.maxPrice = localStorage.getItem('maxPrice') 
       this.minPrice = localStorage.getItem('minPrice') 
       socket = new WebSocket("wss://www.liupei.xyz/wss")
       socket.onopen = () => {
         console.log('Socket opened.')
-        socket.send('{"ticker":"BTC","cycle":"2"}')
+        socket.send(`{"ticker":"${this.ticker}","cycle":"2"}`)
       }
       socket.onclose = () => {
         console.log('Socket closed.')
@@ -64,7 +66,7 @@
       socket.onmessage = (msg) => {
         const data = JSON.parse(msg.data)
         this.setData(data)
-        setTimeout(() => socket.send('{"ticker":"BTC","cycle":"2"}'), 300)
+        setTimeout(() => socket.send(`{"ticker":"${this.ticker}","cycle":"2"}`), 300)
       }
     },
     methods: {
