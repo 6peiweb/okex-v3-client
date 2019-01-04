@@ -22,7 +22,7 @@ const ws = new WebSocketServer({port: 8080})
 
 ws.on('connection', (socket) => {
   console.log(`Websocket connection succeeded...`)
-  console.log(socket)
+  console.log(socket.server)
   socket.on('message', async (msg) => {
     try {
       const data = await getTicker(msg)
