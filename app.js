@@ -10,8 +10,8 @@ const client = new PublicClient('https://www.okex.me')
 
 const futures = client.futures()
 
-const getTicker = async () => {
-  const instrumentId = getInstrumentId('BTC').Quarter
+const getTicker = async (ticker) => {
+  const instrumentId = getInstrumentId(ticker).Quarter
   const response = await futures.getTicker(instrumentId)
   return response
 }
@@ -24,7 +24,7 @@ ws.on('connection', (socket) => {
   console.log(`websocket 连接成功...`)
   socket.on('message', async (msg) => {
     try {
-      const data = await getTicker()
+      const data = await getTicker(msg)
       console.log(data)
       socket.send(JSON.stringify(data))
     } catch {
