@@ -64,7 +64,7 @@
       socket.onmessage = (msg) => {
         const data = JSON.parse(msg.data)
         this.setData(data)
-        setTimeout(() => socket.send('BTC'), 800)
+        setTimeout(() => socket.send('EOS'), 800)
       }
     },
     methods: {
