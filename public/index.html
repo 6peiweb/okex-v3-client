@@ -50,6 +50,8 @@
       notification: null
     },
     created() {
+      this.maxPrice = localStorage.getItem('maxPrice') 
+      this.minPrice = localStorage.getItem('minPrice') 
       socket = new WebSocket("wss://www.liupei.xyz/wss")
       socket.onopen = () => {
         console.log("Socket opened.")
@@ -107,6 +109,10 @@
         }
       },
       changePrompt(flag) {
+        if (flag) {
+          localStorage.setItem('maxPrice', this.maxPrice)
+          localStorage.setItem('minPrice', this.minPrice)
+        }
         this.canPrompt = flag
         flag ?
           console.log(`时间：${new Date().toLocaleTimeString()}，已设定提醒，最大风速【${this.maxPrice}】，最小风速【${this.minPrice}】`) :
