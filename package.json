@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "defend": "forever start app.js",
-    "killdefend": "forever stopall",
+    "kill": "forever stopall",
+    "restart": "forever restartall",
     "start": "nodemon app",
     "publish": "git add . && git commit -m 'ok' && git push"
   },
