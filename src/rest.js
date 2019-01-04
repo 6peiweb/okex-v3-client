@@ -18,8 +18,8 @@ router.get('/v3/ticker/:cycle/:ticker', async ctx => {
   ctx.body = data
 })
 
+app.use(static(path.join( __dirname, '../public')))
 app.use(router.routes())
-app.use(static(path.join( __dirname,  './public')))
 
 module.exports = {
   app
