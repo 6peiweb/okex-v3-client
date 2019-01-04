@@ -12,7 +12,7 @@ const app = new Koa()
 router.get('/v3/ticker/:cycle/:ticker', async ctx => {
   const cycle  = ctx.params.cycle
   const ticker = ctx.params.ticker
-
+  console.log(cycle, ticker)
   const data = await getTicker(cycle, ticker)
 
   return data
