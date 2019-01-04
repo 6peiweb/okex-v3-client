@@ -5,7 +5,7 @@ const Koa    = require('koa')
 const static = require('koa-static')
 const router = require('koa-router')()
 
-// const {  }
+const { getTicker } = require('./okex-v3-api')
 
 const app = new Koa()
 
