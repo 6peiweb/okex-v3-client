@@ -53,7 +53,7 @@
       socket = new WebSocket("wss://www.liupei.xyz/wss")
       socket.onopen = () => {
         console.log('Socket opened.')
-        socket.send('EOS')
+        socket.send('{"ticker":"BTC","cycle":"0"}')
       }
       socket.onclose = () => {
         console.log('Socket closed.')
@@ -63,8 +63,9 @@
       }
       socket.onmessage = (msg) => {
         const data = JSON.parse(msg.data)
+        console.log(data)
         this.setData(data)
-        setTimeout(() => socket.send('EOS'), 800)
+        setTimeout(() => socket.send('{"ticker":"BTC","cycle":"0"}'), 1000)
       }
     },
     methods: {
