@@ -12,10 +12,10 @@ const app = new Koa()
 router.get('/v3/ticker/:cycle/:ticker', async ctx => {
   const cycle  = ctx.params.cycle
   const ticker = ctx.params.ticker
-  
+
   const data = await getTicker(cycle, ticker)
 
-  return data
+  ctx.body = data
 })
 
 app.use(static(path.join( __dirname,  './public')))

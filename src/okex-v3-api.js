@@ -6,16 +6,14 @@ const futures = client.futures()
 
 const getTicker = async (index, ticker) => {
   const instrumentKey = getInstrumentKey(ticker)[index]
-  console.log(instrumentKey)
   const response = await futures.getTicker(instrumentKey)
-  console.log(response)
   return response
 }
 
 const getInstrumentKey = (ticker) => {
   return [
-    `${ticker}-USD-190104`,
     `${ticker}-USD-190111`,
+    `${ticker}-USD-190118`,
     `${ticker}-USD-190329`
   ]
 }
