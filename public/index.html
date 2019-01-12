@@ -66,7 +66,7 @@
       socket.onmessage = (msg) => {
         const data = JSON.parse(msg.data)
         this.setData(data)
-        setTimeout(() => socket.send(`{"ticker":"${this.ticker}","cycle":"2"}`), 300)
+        setTimeout(() => socket.send(`{"ticker":"${this.ticker}","cycle":"2"}`), 1000)
       }
     },
     methods: {
