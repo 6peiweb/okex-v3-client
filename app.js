@@ -1,31 +1,19 @@
-const { PublicClient } = require('@okfe/okex-node')
-
-const { getInstrumentId } = require('./src/util')
-const { sendMail } = require('./src/email')
-const { app } = require('./server')
+const { getTicker } = require('./src/okex-v3-api')
+const { sendMail } = require('./src/mail-smtp')
+const { app } = require('./src/rest')
 
 const PORT = 1113
-
-const client = new PublicClient('https://www.okex.me')
-
-const futures = client.futures()
-
-const getTicker = async () => {
-  const instrumentId = getInstrumentId('BTC').Quarter
-  const response = await futures.getTicker(instrumentId)
-  return response
-}
 
 const WebSocketServer = require('ws').Server
 
 const ws = new WebSocketServer({port: 8080})
 
 ws.on('connection', (socket) => {
-  console.log(`websocket 连接成功...`)
+  console.log(`Websocket connection succeeded...`)
   socket.on('message', async (msg) => {
+    const req = JSON.parse(msg)
     try {
-      const data = await getTicker()
-      console.log(data)
+      const data = await getTicker(req.cycle, req.ticker)
       socket.send(JSON.stringify(data))
     } catch {
       socket.send('{"last": "timeout"}')

@@ -3,36 +3,33 @@
 </head>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <style>
-  /* body {
-    background: rgba(0,0,0,0.5)
-  } */
   .redfont {
     color: red;
   }
   .darkbluefont {
-    color: darkblue;
+    color: #6a6b15;
   }
 </style>
 <div id="app">
   <div>
-    <p :class="fontSize" style="font-size: 100px;">风速：{{price}}</p>
+    <div :class="fontSize" style="font-size: 100px;">BV：{{price}}</div>
     <div>
-      <label for="maxPrice">
-        最大风速：
-        <input id="maxPrice" v-model="maxPrice">
-      </label>
-      <label for="minPrice">
-        最小风速：
-        <input id="minPrice" v-model="minPrice">
-      </label>
-      <button @click="changePrompt(true)">确认</button>
-      <button @click="changePrompt(false)">取消</button>
+      <div>start: <input v-model="start" /></div>
+      <div>
+        <span>multiple</span>
+        <label><input name="multiple" v-model="multiple" type="radio" value=10 />10  </label>
+        <label><input name="multiple" v-model="multiple" type="radio" value=20 />20</label>
+      </div>
+      <div v-if="start">gain: {{parseFloat((price - start) * multiple * 100 / start).toFixed(2)}}%</div>
+    </div>
+    <div style="font-size: 40px;">
+      <input id="maxPrice" v-model="maxPrice" placeholder="MAX BV" />
+      <input id="minPrice" v-model="minPrice" placeholder="MIN BV" />
+      <button @click="changePrompt(true)">submit</button>
+      <button @click="changePrompt(false)">reset</button>
     </div>
   </div>
-  <!-- <div v-for="item in list">
-    <p style="font-size: 14px;">{{item}}</p>
-  </div> -->
-  <audio id="prompt" src="./asserts/prompt.mp3"></audio>
+  <audio id="prompt" src="./asserts/prompt1.mp3"></audio>
 </div>
 <script>
   const icon = document.getElementById('icon')
@@ -41,42 +38,43 @@
   const app = new Vue({
     el: '#app',
     data: {
-      list: [],
       price: '',
       maxPrice: '',
       minPrice: '',
+      start: 0,
+      multiple: 10,
       canPrompt: false,
       fontSize: 'darkbluefont',
-      notification: null
+      notification: null,
+      ticker: ''
     },
     created() {
+      this.ticker = location.search.slice(1).split('&').map(s => s.split('='))[0][1]
+      this.maxPrice = localStorage.getItem('maxPrice') 
+      this.minPrice = localStorage.getItem('minPrice') 
       socket = new WebSocket("wss://www.liupei.xyz/wss")
       socket.onopen = () => {
-        console.log("Socket opened.")
-        socket.send("Hi, Server!")
+        console.log('Socket opened.')
+        socket.send(`{"ticker":"${this.ticker}","cycle":"2"}`)
       }
       socket.onclose = () => {
-        console.log("Socket closed.")
+        console.log('Socket closed.')
       }
       socket.onerror = () => {
-        console.log("We got an error.")
+        console.log('We got an error.')
       }
       socket.onmessage = (msg) => {
         const data = JSON.parse(msg.data)
-        this.pushItem(data)
-        setTimeout(() => socket.send("Hi, Server!"), 800)
+        this.setData(data)
+        setTimeout(() => socket.send(`{"ticker":"${this.ticker}","cycle":"2"}`), 300)
       }
     },
     methods: {
-      pushItem(data){
+      setData(data){
         let price = data.last
         this.price = price
         document.title = price
         this.prompt(price)
-        this.list.unshift(data)
-        if(this.list.length > 10) {
-          this.list.pop()
-        }
       },
       prompt(price) {
         if (audio.paused && this.canPrompt) {
@@ -90,14 +88,14 @@
             this.fontSize = 'redfont'
             icon.href = './asserts/red.png'
             this.notice(true)
-            console.log(`时间：${new Date().toLocaleTimeString()}，风速：【${this.price}】高于设定最高价【${this.maxPrice}】`)
+            console.log(`时间：${new Date().toLocaleTimeString()}，BV：【${this.price}】高于设定最高价【${this.maxPrice}】`)
             return audio.play()
           }
           if (this.minPrice && this.price <= this.minPrice) {
             this.fontSize = 'redfont'
             icon.href = './asserts/red.png'
             this.notice(false)
-            console.log(`时间：${new Date().toLocaleTimeString()}，风速：【${this.price}】低于设定最低价【${this.minPrice}】`)
+            console.log(`时间：${new Date().toLocaleTimeString()}，BV：【${this.price}】低于设定最低价【${this.minPrice}】`)
             return audio.play()
           }
           this.fontSize = 'darkbluefont'
@@ -107,16 +105,20 @@
         }
       },
       changePrompt(flag) {
+        if (flag) {
+          localStorage.setItem('maxPrice', this.maxPrice)
+          localStorage.setItem('minPrice', this.minPrice)
+        }
         this.canPrompt = flag
         flag ?
-          console.log(`时间：${new Date().toLocaleTimeString()}，已设定提醒，最大风速【${this.maxPrice}】，最小风速【${this.minPrice}】`) :
+          console.log(`时间：${new Date().toLocaleTimeString()}，已设定提醒，最大BV【${this.maxPrice}】，最小BV【${this.minPrice}】`) :
           console.log(`时间：${new Date().toLocaleTimeString()}，已取消提醒`)
         return audio.pause()
       },
       notice(key) {
         if (Notification.permission == "granted") {
-          this.notification = new Notification(`${key ? '风速过快' : '风速过慢'}`, {
-            body: `风速已${key ? '向上' : '向下'}触发提醒风速：【${key ? this.maxPrice : this.minPrice}】`,
+          this.notification = new Notification(`${key ? 'BV过快' : 'BV过慢'}`, {
+            body: `BV已${key ? '向上' : '向下'}触发提醒BV：【${key ? this.maxPrice : this.minPrice}】`,
             icon: 'https://developers.weixin.qq.com/miniprogram/dev/image/cat/3.png?t=18122815'
           })
         }
