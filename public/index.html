@@ -14,13 +14,12 @@
   <div>
     <div :class="fontSize" style="font-size: 100px;">BV：{{price}}</div>
     <div>
-      <div>start: <input v-model="start" /></div>
-      <div>
-        <span>multiple</span>
-        <label><input name="multiple" v-model="multiple" type="radio" value=10 />10  </label>
-        <label><input name="multiple" v-model="multiple" type="radio" value=20 />20</label>
-      </div>
-      <div v-if="start">gain: {{parseFloat((price - start) * multiple * 100 / start).toFixed(2)}}%</div>
+      <input v-model="start" /></div>
+      <label><input name="multiple" v-model="multiple" type="radio" value=10 />10</label>
+      <label><input name="multiple" v-model="multiple" type="radio" value=20 />20</label>
+      <label><input name="position" v-model="position" type="radio" value="true" />多</label>
+      <label><input name="position" v-model="position" type="radio" value="false" />空</label>
+      <div v-if="start">{{gain}}</div>
     </div>
     <div style="font-size: 40px;">
       <input id="maxPrice" v-model="maxPrice" placeholder="MAX BV" />
@@ -46,7 +45,8 @@
       canPrompt: false,
       fontSize: 'darkbluefont',
       notification: null,
-      ticker: ''
+      ticker: '',
+      position: false
     },
     created() {
       this.ticker = location.search.slice(1).split('&').map(s => s.split('='))[0][1]
@@ -68,6 +68,14 @@
         this.setData(data)
         setTimeout(() => socket.send(`{"ticker":"${this.ticker}","cycle":"2"}`), 1000)
       }
+    },
+    computed: {
+      gain() {
+        let pos = '+';
+        if (this.position === 'true' && this.start > this.price) pos = '-'
+        if (this.position === 'false' && this.start < this.price) pos = '-'
+        return pos + parseFloat((this.price - this.start) * this.multiple * 100 / this.start).toFixed(2) + '%'
+      },
     },
     methods: {
       setData(data){
