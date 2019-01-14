@@ -46,7 +46,7 @@
       fontSize: 'darkbluefont',
       notification: null,
       ticker: '',
-      position: false
+      position: true
     },
     created() {
       this.ticker = location.search.slice(1).split('&').map(s => s.split('='))[0][1]
