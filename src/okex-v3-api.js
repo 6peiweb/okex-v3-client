@@ -14,7 +14,7 @@ const getInstrumentKey = (ticker) => {
   return [
     `${ticker}-USD-190111`,
     `${ticker}-USD-190118`,
-    `${ticker}-USD-190329`
+    `${ticker}-USD-190628`
   ]
 }
 
