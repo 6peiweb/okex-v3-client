@@ -126,7 +126,7 @@
       notice(key) {
         if (Notification.permission == "granted") {
           this.notification = new Notification(`${key ? 'BV过快' : 'BV过慢'}`, {
-            body: `BV已${key ? '向上' : '向下'}触发提醒BV：【${this.price}】`,
+            body: `BV已【${key ? '向上' : '向下'}】触发提醒BV：【${this.price}】`,
             icon: 'https://developers.weixin.qq.com/miniprogram/dev/image/cat/3.png?t=18122815'
           })
         }
