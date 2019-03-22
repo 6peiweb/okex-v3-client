@@ -27,5 +27,6 @@ const getInstrumentKey = (ticker) => {
 }
 
 module.exports = {
-  getTicker
+  getTicker,
+  getBook
 }
