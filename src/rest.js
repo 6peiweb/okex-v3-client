@@ -2,6 +2,7 @@ const http   = require('http')
 const path   = require('path')
 
 const Koa    = require('koa')
+const cors = require('koa2-cors')
 const static = require('koa-static')
 const router = require('koa-router')()
 
@@ -27,6 +28,7 @@ router.get('/v3/book/:cycle/:ticker', async ctx => {
   ctx.body = data
 })
 
+app.use(cors())
 app.use(static(path.join( __dirname, '../public')))
 app.use(router.routes())
 
