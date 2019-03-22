@@ -28,7 +28,14 @@ router.get('/v3/book/:cycle/:ticker', async ctx => {
   ctx.body = data
 })
 
-app.use(cors())
+app.use(cors({
+  origin: () => '*',
+  exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+  maxAge: 5,
+  credentials: true,
+  allowMethods: ['GET', 'POST', 'DELETE'],
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept']
+}))
 app.use(static(path.join( __dirname, '../public')))
 app.use(router.routes())
 
