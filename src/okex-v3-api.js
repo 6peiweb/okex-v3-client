@@ -12,8 +12,10 @@ const getTicker = async (index, ticker) => {
 
 const getBook = async (index, ticker) => {
   const instrumentKey = getInstrumentKey(ticker)[index]
-  const result = await futures.getBook(instrumentKey, {size: 200});
-  return result;
+  console.log(instrumentKey)
+  const result = await futures.getBook(instrumentKey, {size: 200})
+  console.log(result);
+  return result
 }
 
 const getInstrumentKey = (ticker) => {
