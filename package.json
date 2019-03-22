@@ -6,7 +6,7 @@
   "scripts": {
     "defend": "forever start app.js",
     "kill": "forever stopall",
-    "restart": "forever restartall",
+    "restart": "git pull && forever restartall",
     "start": "nodemon app",
     "publish": "git add . && git commit -m 'ok' && git push"
   },
