@@ -3,6 +3,9 @@
 </head>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <style>
+  body {
+    background: black;
+  }
   .redfont {
     color: red;
   }
@@ -12,7 +15,7 @@
 </style>
 <div id="app">
   <div>
-    <div :class="fontSize" style="font-size: 100px;">BV：{{price}}</div>
+    <div :class="fontSize" style="font-size: 150px;">BV：{{price}}</div>
     <div>
       <input v-model="start" /></div>
       <label><input name="multiple" v-model="multiple" type="radio" value=10 />10</label>

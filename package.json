@@ -24,6 +24,7 @@
     "ws": "^6.1.2"
   },
   "devDependencies": {
-    "forever": "^0.15.3"
+    "forever": "^0.15.3",
+    "koa2-cors": "^2.0.6"
   }
 }

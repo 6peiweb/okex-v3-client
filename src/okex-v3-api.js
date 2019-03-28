@@ -10,6 +10,14 @@ const getTicker = async (index, ticker) => {
   return response
 }
 
+const getBook = async (index, ticker) => {
+  const instrumentKey = getInstrumentKey(ticker)[index]
+  console.log(instrumentKey)
+  const result = await futures.getBook(instrumentKey, {size: 200})
+  console.log(result);
+  return result
+}
+
 const getInstrumentKey = (ticker) => {
   return [
     `${ticker}-USD-190111`,
@@ -19,5 +27,6 @@ const getInstrumentKey = (ticker) => {
 }
 
 module.exports = {
-  getTicker
+  getTicker,
+  getBook
 }
